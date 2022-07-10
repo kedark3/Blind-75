@@ -8,28 +8,31 @@ target = 11
 # take = 1, target = 10, coins = [1,4,7,10]
 # notTake = 0, target = 11, coins = [4,7,10]
 global result
-result = []
+result= []
 
-def helper(coins, i, target, path):
+def helper(coins, i, target, path, count):
     # base
     global result
     if target == 0:
         result.append(path[:])
-        return
+        return count
     if i == len(coins) or target < 0:
-        return
+        return -1
     # logic
     # noChoose
-    helper(coins, i+1, target, path)
+    case1 =helper(coins, i+1, target, path, count)
     # choose
     path.append(coins[i])
-    helper(coins, i, target-coins[i], path)
+    case2 = helper(coins, i+1, target-coins[i], path, count+1)
     path.pop()
+    if case1 == -1: return case2
+    if case2 == -1: return case1
+    return min(case1,case2)
 
 
 coins = [1,4,7,10,12]
-target = 12
-helper(coins, 0, target, [])
+target = 11
+print(helper(coins, 0, target, [], 0))
 print(result)
 
 
